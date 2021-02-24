@@ -1,8 +1,8 @@
 import java.awt.Color;
 
 public class Bishop extends Piece {
-    public Bishop(Color color) {
-        super(color);
+    public Bishop(boolean isWhite) {
+        super(isWhite);
     }
 
     @Override
@@ -30,11 +30,11 @@ public class Bishop extends Piece {
 
             if (!ignoreTopLeftDirection && Chess.areValidCellCoordinates(topX, leftY)) {
                 Piece piece = board[topX][leftY];
-                if (piece == null || piece.getColor() != selectedPiece.getColor()) {
+                if (piece == null || piece.isWhite() != selectedPiece.isWhite()) {
                     int[] newItem = {topX, leftY};
                     result = Utilities.appendToMatrix(result, newItem);
                     if (piece != null) {
-                        ignoreTopLeftDirection = piece.getColor() != selectedPiece.getColor();
+                        ignoreTopLeftDirection = piece.isWhite() != selectedPiece.isWhite();
                     }
                 } else {
                     ignoreTopLeftDirection = true;
@@ -45,11 +45,11 @@ public class Bishop extends Piece {
 
             if (!ignoreTopRightDirection && Chess.areValidCellCoordinates(topX, rightY)) {
                 Piece piece = board[topX][rightY];
-                if (piece == null || piece.getColor() != selectedPiece.getColor()) {
+                if (piece == null || piece.isWhite() != selectedPiece.isWhite()) {
                     int[] newItem = {topX, rightY};
                     result = Utilities.appendToMatrix(result, newItem);
                     if (piece != null) {
-                        ignoreTopRightDirection = piece.getColor() != selectedPiece.getColor();
+                        ignoreTopRightDirection = piece.isWhite() != selectedPiece.isWhite();
                     }
                 } else {
                     ignoreTopRightDirection = true;
@@ -60,11 +60,11 @@ public class Bishop extends Piece {
 
             if (!ignoreBottomLeftDirection && Chess.areValidCellCoordinates(bottomX, leftY)) {
                 Piece piece = board[bottomX][leftY];
-                if (piece == null || piece.getColor() != selectedPiece.getColor()) {
+                if (piece == null || piece.isWhite() != selectedPiece.isWhite()) {
                     int[] newItem = {bottomX, leftY};
                     result = Utilities.appendToMatrix(result, newItem);
                     if (piece != null) {
-                        ignoreBottomLeftDirection = piece.getColor() != selectedPiece.getColor();
+                        ignoreBottomLeftDirection = piece.isWhite() != selectedPiece.isWhite();
                     }
                 } else {
                     ignoreBottomLeftDirection = true;
@@ -75,11 +75,11 @@ public class Bishop extends Piece {
 
             if (!ignoreBottomRightDirection && Chess.areValidCellCoordinates(bottomX, rightY)) {
                 Piece piece = board[bottomX][rightY];
-                if (piece == null || piece.getColor() != selectedPiece.getColor()) {
+                if (piece == null || piece.isWhite() != selectedPiece.isWhite()) {
                     int[] newItem = {bottomX, rightY};
                     result = Utilities.appendToMatrix(result, newItem);
                     if (piece != null) {
-                        ignoreBottomRightDirection = piece.getColor() != selectedPiece.getColor();
+                        ignoreBottomRightDirection = piece.isWhite() != selectedPiece.isWhite();
                     }
                 } else {
                     ignoreBottomRightDirection = true;
@@ -95,10 +95,10 @@ public class Bishop extends Piece {
 
     @Override
     public String toString() {
-        if (getColor() == Color.black) {
-            return Piece.blackColorCode + "♝";
-        } else {
+        if (isWhite()) {
             return Piece.whiteColorCode + "♗";
+        } else {
+            return Piece.blackColorCode + "♝";
         }
     }
 }

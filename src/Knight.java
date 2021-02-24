@@ -1,10 +1,13 @@
 import java.awt.Color;
 
 public class Knight extends Piece {
-    private static final int numberOfStepsToSides = 2;
+    public Knight(boolean isWhite) {
+        super(isWhite);
+    }
 
-    public Knight(Color color) {
-        super(color);
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return new Knight(isWhite());
     }
 
     @Override
@@ -17,91 +20,14 @@ public class Knight extends Piece {
             return result;
         }
 
-        int minX = fromX - Knight.numberOfStepsToSides;
-        int maxX = fromX + Knight.numberOfStepsToSides;
-        int minY = fromY - Knight.numberOfStepsToSides;
-        int maxY = fromY + Knight.numberOfStepsToSides;
+        int[] xValues = {fromX - 1, fromX - 2, fromX - 2, fromX - 1, fromX + 1, fromX + 2, fromX + 2, fromX + 1};
+        int[] yValues = {fromY - 2, fromY - 1, fromY + 1, fromY + 2, fromY + 2, fromY + 1, fromY - 1, fromY - 2};
 
-        if (minX >= 0) {
-            int rightY = fromY + 1;
-            int leftY = fromY - 1;
-
-            if (rightY < Chess.boardSideLength) {
-                Piece piece = board[minX][rightY];
-                if (piece == null || piece.getColor() != initialPiece.getColor()) {
-                    int[] point = {minX, rightY};
-                    result = Utilities.appendToMatrix(result, point);
-                }
-            }
-
-            if (leftY >= 0) {
-                Piece piece = board[minX][leftY];
-                if (piece == null || piece.getColor() != initialPiece.getColor()) {
-                    int[] point = {minX, leftY};
-                    result = Utilities.appendToMatrix(result, point);
-                }
-            }
-        }
-
-        if (maxX < Chess.boardSideLength) {
-            int rightY = fromY + 1;
-            int leftY = fromY - 1;
-
-            if (rightY < Chess.boardSideLength) {
-                Piece piece = board[maxX][rightY];
-                if (piece == null || piece.getColor() != initialPiece.getColor()) {
-                    int[] point = {maxX, rightY};
-                    result = Utilities.appendToMatrix(result, point);
-                }
-            }
-
-            if (leftY >= 0) {
-                Piece piece = board[maxX][leftY];
-                if (piece == null || piece.getColor() != initialPiece.getColor()) {
-                    int[] point = {maxX, leftY};
-                    result = Utilities.appendToMatrix(result, point);
-                }
-            }
-        }
-
-        if (minY >= 0) {
-            int rightX = fromX + 1;
-            int leftX = fromX - 1;
-
-            if (rightX < Chess.boardSideLength) {
-                Piece piece = board[rightX][minY];
-                if (piece == null || piece.getColor() != initialPiece.getColor()) {
-                    int[] point = {rightX, minY};
-                    result = Utilities.appendToMatrix(result, point);
-                }
-            }
-
-            if (leftX >= 0) {
-                Piece piece = board[leftX][minY];
-                if (piece == null || piece.getColor() != initialPiece.getColor()) {
-                    int[] point = {leftX, minY};
-                    result = Utilities.appendToMatrix(result, point);
-                }
-            }
-        }
-
-        if (maxY < Chess.boardSideLength) {
-            int rightX = fromX + 1;
-            int leftX = fromX - 1;
-
-            if (rightX < Chess.boardSideLength) {
-                Piece piece = board[rightX][maxY];
-                if (piece == null || piece.getColor() != initialPiece.getColor()) {
-                    int[] point = {rightX, maxY};
-                    result = Utilities.appendToMatrix(result, point);
-                }
-            }
-
-            if (leftX >= 0) {
-                Piece piece = board[leftX][maxY];
-                if (piece == null || piece.getColor() != initialPiece.getColor()) {
-                    int[] point = {leftX, maxY};
-                    result = Utilities.appendToMatrix(result, point);
+        for (int i = 0; i < xValues.length && i < yValues.length; ++i) {
+            if (Chess.areValidCellCoordinates(xValues[i], yValues[i])) {
+                Piece piece = board[xValues[i]][yValues[i]];
+                if (piece == null || piece.isWhite() != isWhite()) {
+                    result = Utilities.appendToMatrix(result, new int[]{xValues[i], yValues[i]});
                 }
             }
         }
@@ -111,10 +37,10 @@ public class Knight extends Piece {
 
     @Override
     public String toString() {
-        if (getColor() == Color.black) {
-            return Piece.blackColorCode + "♞";
-        } else {
+        if (isWhite()) {
             return Piece.whiteColorCode + "♘";
+        } else {
+            return Piece.blackColorCode + "♞";
         }
     }
 }
